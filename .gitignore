@@ -134,4 +134,4 @@ dmypy.json
 __pycache__/
 /pytest/
 /logs/
-/day_4/day_4_improvements/test_results/
+/test_results/
