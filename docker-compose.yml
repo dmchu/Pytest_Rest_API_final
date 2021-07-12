@@ -8,4 +8,4 @@ services:
     environment:
       - ENV=dev
     volumes:
-      - .:/test_results/
+      - .:/tests_project/
