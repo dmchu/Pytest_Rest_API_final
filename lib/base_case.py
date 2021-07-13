@@ -19,17 +19,30 @@ class BaseCase:
         assert name in response_as_dict, f"Response JSON doesn't have key '{name}"
         return response_as_dict.get(name)
 
-    def prepare_registration_data(self, email=None) -> dict:
+    def prepare_registration_data(self, email=None, missing_param=None, empty_param=None) -> dict:
         if email is None:
             base_part = "learnqa"
             domain = "example.com"
             random_part = dt.now().strftime("%m%d%Y%H%M%S")
             email = f"{base_part}{random_part}@{domain}"
 
-        return {
+        params = {
             'password': '123',
             'username': 'learnqa',
             'firstName': 'learnqa',
             'lastName': 'learnqa',
             'email': email
         }
+
+        if missing_param is not None:
+            if params.get(missing_param):
+                params.pop(missing_param)
+            else:
+                raise Exception(f"Bad 'missing parameter' '{missing_param} was received'")
+
+        elif empty_param is not None:
+            if params.get(empty_param):
+                params[empty_param] = ''
+            else:
+                raise Exception(f"Bad 'empty parameter' '{empty_param} was received'")
+        return params
