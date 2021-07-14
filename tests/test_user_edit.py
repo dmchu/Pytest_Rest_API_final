@@ -136,3 +136,45 @@ class TestUserEdit(BaseCase):
         user_first_name = response_data.get("firstName")
         assert user_first_name != new_name,\
             "First name should not be changed by user with another authenticated user, but it did"
+
+    def test_edit_user_email_with_wrong_format(self):
+        user_email = self.registered_user.get("user_email")
+        user_password = self.registered_user.get("user_password")
+        user_id = self.registered_user.get("user_id")
+
+        # Authorization
+        login_data = {
+            'email': user_email,
+            'password': user_password
+        }
+
+        response2 = MR.post(self.URI_LOGIN, data=login_data)
+
+        auth_sid = self.get_cookie(response2, "auth_sid")
+        token = self.get_header(response2, "x-csrf-token")
+
+        URI_USER = self.BASE_URI + str(user_id)
+        new_email = user_email.replace("@", ".")
+
+        headers = {
+            'x-csrf-token': token
+        }
+        cookies = {
+            'auth_sid': auth_sid
+        }
+        edit_data = {
+            'email': new_email
+        }
+        # Edit user data
+
+        response3 = MR.put(URI_USER, headers=headers, cookies=cookies, data=edit_data)
+        AS.assert_code_status(response3, 400)
+        AS.assert_response_text(response3, "Invalid email format")
+
+        # Get updated user data
+
+        response4 = MR.get(URI_USER, headers=headers, cookies=cookies)
+        response_data = response4.json()
+        user_email = response_data.get("email")
+        assert user_email != new_email,\
+            "Email should not be changed by user to email with wrong format, but it did"
