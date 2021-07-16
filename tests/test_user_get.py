@@ -1,11 +1,16 @@
+import allure
 from lib.base_case import BaseCase
 from lib.assersions import Assertions as AS
 from lib.my_requests import MyRequests as MR
 
 
+@allure.epic("User Profile View cases")
 class TestUserGet(BaseCase):
     BASE_URI: str = "/user/"
 
+    @allure.feature("User Profile View")
+    @allure.story("negative - View user profile details without authorization")
+    @allure.description("Verifiying that only user 'username' can be viewed without authorization")
     def test_get_user_details_not_auth(self):
         user_id = "2"
         URI = self.BASE_URI + user_id
@@ -14,6 +19,9 @@ class TestUserGet(BaseCase):
         expected_fields = ["email", "firstName", "lastName"]
         AS.assert_json_has_no_keys(response, expected_fields)
 
+    @allure.feature("User Profile View")
+    @allure.story("positive - View user profile details with authorization")
+    @allure.description("Verifiying that user profile details' can be viewed with authorization")
     def test_get_user_details_auth_as_same_user(self):
         URI1 = self.BASE_URI + "login"
         user_email = "vinkotov@example.com"
@@ -38,6 +46,9 @@ class TestUserGet(BaseCase):
         expected_fields = ["id", "username", "email", "firstName", "lastName"]
         AS.assert_json_has_keys(response2, expected_fields)
 
+    @allure.feature("User Profile View")
+    @allure.story("negative - View user profile details with another user authorization")
+    @allure.description("Verifiying that only user 'username' can be viewed with another user authorization")
     def test_get_user_details_with_auth_as_another_user(self):
         URI1 = self.BASE_URI + "login"
         user_email = "vinkotov@example.com"
