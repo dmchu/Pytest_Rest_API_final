@@ -10,8 +10,9 @@ class TestUserEdit(BaseCase):
     BASE_URI: str = "/user/"
     URI_LOGIN: str = BASE_URI + "login"
 
-    @allure.feature("User Profile Edit")
-    @allure.story("positive - Edit profile of just created user")
+    @allure.feature("User Profile Edit - positive")
+    @allure.story("Edit profile of just created user")
+    @allure.severity("CRITICAL")
     @allure.description("Verifiying that user profile of just created user can be edited")
     def test_edit_just_created_user(self):
         registered_user: dict = HP.register_user(HP)
@@ -42,8 +43,9 @@ class TestUserEdit(BaseCase):
         response4 = MR.get(URI_USER, headers=headers, cookies=cookies)
         AS.assert_json_value_by_name(response4, "firstName", new_name, "Wrong name of user after update")
 
-    @allure.feature("User Profile Edit")
-    @allure.story("negative - Edit profile of user without authorization")
+    @allure.feature("User Profile Edit - negative")
+    @allure.story("Edit profile of user without authorization")
+    @allure.severity("BLOCKER")
     @allure.description("Verifiying that user profile can not be edited without authorization")
     def test_edit_existing_user_without_authorization(self):
         registered_user: dict = HP.register_user(HP)
@@ -65,8 +67,9 @@ class TestUserEdit(BaseCase):
         AS.assert_code_status(response, 400)
         AS.assert_response_text(response, "Auth token not supplied")
 
-    @allure.feature("User Profile Edit")
-    @allure.story("negative - Edit profile of user with another user authorization")
+    @allure.feature("User Profile Edit - negative")
+    @allure.story("Edit profile of user with another user authorization")
+    @allure.severity("BLOCKER")
     @allure.description("Verifiying that user profile can not be edited with another user authorization")
     def test_edit_existing_user_with_authorization_by_another_user(self):
         registered_user: dict = HP.register_user(HP)
@@ -123,8 +126,9 @@ class TestUserEdit(BaseCase):
         assert user_first_name != new_name, \
             "First name should not be changed by user with another authenticated user, but it did"
 
-    @allure.feature("User Profile Edit")
-    @allure.story("negative - Edit user 'email' with wrong email format")
+    @allure.feature("User Profile Edit - negative")
+    @allure.story("Edit user 'email' with wrong email format")
+    @allure.severity("MINOR")
     @allure.description("Verifiying that user 'email' can not be edited with wrong email format")
     def test_edit_user_email_with_wrong_format(self):
         registered_user: dict = HP.register_user(HP)
@@ -160,8 +164,9 @@ class TestUserEdit(BaseCase):
         assert user_email != new_email, \
             "Email should not be changed by user to email with wrong format, but it did"
 
-    @allure.feature("User Profile Edit")
-    @allure.story("negative - Edit user 'first name' with one character")
+    @allure.feature("User Profile Edit - negative")
+    @allure.story("Edit user 'first name' with one character")
+    @allure.severity("TRIVIAL")
     @allure.description("Verifiying that user 'first name' can not be edited with one character")
     def test_edit_user_first_name_with_one_character(self):
         registered_user: dict = HP.register_user(HP)

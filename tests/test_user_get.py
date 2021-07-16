@@ -8,8 +8,9 @@ from lib.my_requests import MyRequests as MR
 class TestUserGet(BaseCase):
     BASE_URI: str = "/user/"
 
-    @allure.feature("User Profile View")
-    @allure.story("negative - View user profile details without authorization")
+    @allure.feature("User Profile View - negative")
+    @allure.story("View user profile details without authorization")
+    @allure.severity("CRITICAL")
     @allure.description("Verifiying that only user 'username' can be viewed without authorization")
     def test_get_user_details_not_auth(self):
         user_id = "2"
@@ -19,8 +20,9 @@ class TestUserGet(BaseCase):
         expected_fields = ["email", "firstName", "lastName"]
         AS.assert_json_has_no_keys(response, expected_fields)
 
-    @allure.feature("User Profile View")
-    @allure.story("positive - View user profile details with authorization")
+    @allure.feature("User Profile View - positive")
+    @allure.story("View user profile details with authorization")
+    @allure.severity("BLOCKER")
     @allure.description("Verifiying that user profile details' can be viewed with authorization")
     def test_get_user_details_auth_as_same_user(self):
         URI1 = self.BASE_URI + "login"
@@ -46,8 +48,9 @@ class TestUserGet(BaseCase):
         expected_fields = ["id", "username", "email", "firstName", "lastName"]
         AS.assert_json_has_keys(response2, expected_fields)
 
-    @allure.feature("User Profile View")
-    @allure.story("negative - View user profile details with another user authorization")
+    @allure.feature("User Profile View - negative")
+    @allure.story("View user profile details with another user authorization")
+    @allure.severity("BLOCKER")
     @allure.description("Verifiying that only user 'username' can be viewed with another user authorization")
     def test_get_user_details_with_auth_as_another_user(self):
         URI1 = self.BASE_URI + "login"

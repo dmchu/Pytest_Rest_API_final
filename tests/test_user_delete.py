@@ -11,8 +11,9 @@ class TestUserDelete(BC):
     URI_LOGIN: str = BASE_URI + "login"
 
 
-    @allure.feature("User Deletion")
-    @allure.story("negative - Delete Existing User")
+    @allure.feature("User Deletion - negative")
+    @allure.story("Delete Existing User")
+    @allure.severity("BLOCKER")
     @allure.description("Verifiying that some existing users can not be deleted")
     def test_delete_existing_user(self):
 
@@ -29,8 +30,9 @@ class TestUserDelete(BC):
         AS.assert_code_status(get_user_info_response, 200)
         AS.assert_json_value_by_name(get_user_info_response, "username", "Vitaliy", "Unexpected response value for 'username'")
 
-    @allure.feature("User Deletion")
-    @allure.story("positive - Delete Existing User")
+    @allure.feature("User Deletion - positive")
+    @allure.story("Delete Existing User")
+    @allure.severity("CRITICAL")
     @allure.description("Verifiying that registered recently users can be deleted")
     def test_delete_user_successfully(self):
         registered_user: dict = HP.register_user(HP)
