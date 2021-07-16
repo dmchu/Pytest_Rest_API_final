@@ -27,13 +27,16 @@ class TestUserAuth(BaseCase):
         self.auth_cookies = {
             "auth_sid": self.auth_sid
         }
-
+    @allure.feature("User Authentication")
+    @allure.story("positive - Happy path")
     @allure.description("Verifiying 'happy path' for user authentication by email and password")
     def test_auth_user(self):
         response2 = MR.get(self.URI2,headers=self.auth_headers, cookies=self.auth_cookies)
         error_message = "User id from auth method is not equal to user id from check method"
         AS.assert_json_value_by_name(response2, "user_id", self.user_id_from_auth_method, error_message)
 
+    @allure.feature("User Authentication")
+    @allure.story("negative - without required parameter")
     @allure.description("Verifiying authorization without sending auth cookie or token")
     @pytest.mark.parametrize("condition", exclude_params)
     def test_negative_auth_check(self, condition):
