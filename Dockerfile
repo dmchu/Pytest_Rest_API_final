@@ -4,4 +4,4 @@ COPY requirements.txt .
 RUN pip install -U pip
 RUN pip install -r requirements.txt
 ENV ENV=dev
-CMD python -m pytest -s -v --alluredir=test_results/ /tests_project/tests/
+CMD python -m pytest -s -v -n 2 --alluredir=test_results/ /tests_project/tests/
